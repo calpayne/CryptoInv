@@ -4,14 +4,16 @@ using CryptoInv.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CryptoInv.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190228184251_AddCoins")]
+    partial class AddCoins
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,27 +26,9 @@ namespace CryptoInv.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .IsRequired();
-
                     b.HasKey("Id");
 
                     b.ToTable("Coins");
-
-                    b.HasData(
-                        new { Id = "BTC", Name = "Bitcoin" },
-                        new { Id = "ETH", Name = "Ethereum" },
-                        new { Id = "BCH", Name = "Bitcoin Cash" },
-                        new { Id = "LTC", Name = "Litecoin" },
-                        new { Id = "XMR", Name = "Monero" },
-                        new { Id = "XLM", Name = "Stellar" },
-                        new { Id = "XRP", Name = "XRP" },
-                        new { Id = "ZEC", Name = "Zcash" },
-                        new { Id = "WAVES", Name = "Waves" },
-                        new { Id = "DOGE", Name = "Dogecoin" },
-                        new { Id = "DASH", Name = "Dash" },
-                        new { Id = "TRX", Name = "TRON" }
-                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
