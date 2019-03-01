@@ -1,4 +1,4 @@
-﻿@model CryptoInv.Data.Investment
+﻿@model CryptoInv.Models.Investments.InvestmentCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -40,31 +40,6 @@
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default btn-block" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PricePerCoinEnd" class="control-label"></label>
-                        <input asp-for="PricePerCoinEnd" class="form-control" />
-                        <span asp-validation-for="PricePerCoinEnd" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Cost" class="control-label"></label>
-                        <input asp-for="Cost" class="form-control" />
-                        <span asp-validation-for="Cost" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CostEnd" class="control-label"></label>
-                        <input asp-for="CostEnd" class="form-control" />
-                        <span asp-validation-for="CostEnd" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="InvestmentDateEnd" class="control-label"></label>
-                        <input asp-for="InvestmentDateEnd" class="form-control" />
-                        <span asp-validation-for="InvestmentDateEnd" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserId" class="control-label"></label>
-                        <input asp-for="UserId" class="form-control" />
-                        <span asp-validation-for="UserId" class="text-danger"></span>
                     </div>
                 </form>
             </div>

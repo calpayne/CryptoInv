@@ -6,22 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CryptoInv.Data;
+using CryptoInv.Models.Investments;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CryptoInv.Controllers
 {
+    [Authorize]
     public class InvestmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly System.Security.Claims.ClaimsPrincipal _currentUser;
 
-        public InvestmentsController(ApplicationDbContext context)
+        public InvestmentsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+            _currentUser = this.User;
         }
 
         // GET: Investments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Investments.Include(i => i.Coin);
+            var applicationDbContext = _context.Investments
+                .Include(i => i.Coin)
+                .Where(i => i.UserId == _userManager.GetUserId(_currentUser));
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +46,7 @@ namespace CryptoInv.Controllers
             var investment = await _context.Investments
                 .Include(i => i.Coin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (investment == null)
+            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
             {
                 return NotFound();
             }
@@ -56,11 +66,21 @@ namespace CryptoInv.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CoinId,Amount,PricePerCoin,PricePerCoinEnd,Cost,CostEnd,InvestmentDate,InvestmentDateEnd,UserId")] Investment investment)
+        public async Task<IActionResult> Create([Bind("Id,CoinId,Amount,PricePerCoin,InvestmentDate")] InvestmentCreateViewModel investment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(investment);
+                var newInvestment = new Investment()
+                {
+                    Id = investment.Id,
+                    CoinId = investment.CoinId,
+                    Amount = investment.Amount,
+                    PricePerCoin = investment.PricePerCoin,
+                    Cost = investment.Amount * investment.PricePerCoin,
+                    InvestmentDate = investment.InvestmentDate,
+                    UserId = _userManager.GetUserId(_currentUser)
+                };
+                _context.Add(newInvestment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -77,7 +97,7 @@ namespace CryptoInv.Controllers
             }
 
             var investment = await _context.Investments.FindAsync(id);
-            if (investment == null)
+            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
             {
                 return NotFound();
             }
@@ -132,7 +152,7 @@ namespace CryptoInv.Controllers
             var investment = await _context.Investments
                 .Include(i => i.Coin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (investment == null)
+            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
             {
                 return NotFound();
             }
