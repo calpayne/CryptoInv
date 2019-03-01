@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CryptoInv.Data.Investment>
+﻿@model IEnumerable<CryptoInv.Models.Investments.InvestmentViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Your Investments";
 }
 
 <div class="heading">
@@ -15,17 +15,17 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£1,300<br><span>Invested</span></p>
+                            <p>£0<br><span>Invested</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>+£10,300<br><span>Profit</span></p>
+                            <p>+£0<br><span>Profit</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£11,600<br><span>Assets</span></p>
+                            <p>£0<br><span>Assets</span></p>
                         </div>
                     </div>
                 </div>
@@ -59,42 +59,66 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.InvestmentDate)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PricePerCoinNow)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CostNow)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Profit)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PriceChange24Hours)
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Coin.Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Amount)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PricePerCoin)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Cost)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.InvestmentDate)
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            Manage
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
-                                            <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
-                                            <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.Coin.Id)</p>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.Amount)</p>
+                            </td>
+                            <td>
+                                <p>&pound;@Html.DisplayFor(modelItem => item.PricePerCoin)</p>
+                            </td>
+                            <td>
+                                <p>&pound;@Html.DisplayFor(modelItem => item.Cost)</p>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.InvestmentDate)</p>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.PricePerCoinNow)</p>
+                            </td>
+                            <td>
+                                <p>&pound;@Html.DisplayFor(modelItem => item.CostNow)</p>
+                            </td>
+                            <td>
+                                <p>&pound;@Html.DisplayFor(modelItem => item.Profit)</p>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Manage
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
+                                        <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
+                                        <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

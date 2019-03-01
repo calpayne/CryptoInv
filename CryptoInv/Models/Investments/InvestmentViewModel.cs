@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CryptoInv.Models.Investments
 {
-    public class InvestmentCreateViewModel
+    public class InvestmentViewModel
     {
         [Display(Name = "Id")]
         public int Id { get; set; }
@@ -27,17 +27,29 @@ namespace CryptoInv.Models.Investments
         [Display(Name = "End Coin Price")]
         public double? PricePerCoinEnd { get; set; }
 
+        [Display(Name = "Coin Price Now"), Required]
+        public string PricePerCoinNow { get; set; }
+
         [Display(Name = "Cost"), Required]
         public double Cost { get; set; }
 
         [Display(Name = "End Cost")]
         public double? CostEnd { get; set; }
 
-        [Display(Name = "Investment Date"), Required]
+        [Display(Name = "Cost Now"), Required]
+        public double CostNow { get; set; }
+
+        [Display(Name = "Investment Date"), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true), Required]
         public DateTime InvestmentDate { get; set; }
 
-        [Display(Name = "Investment End Date")]
+        [Display(Name = "Investment End Date"), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? InvestmentDateEnd { get; set; }
+
+        [Display(Name = "Profit"), Required]
+        public double Profit { get; set; }
+
+        [Display(Name = "24 Hour Change"), Required]
+        public string PriceChange24Hours { get; set; }
 
         [Display(Name = "User")]
         public string UserId { get; set; }

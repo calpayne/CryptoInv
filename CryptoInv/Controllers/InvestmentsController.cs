@@ -9,6 +9,7 @@ using CryptoInv.Data;
 using CryptoInv.Models.Investments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using CryptoInv.Data.Crypto;
 
 namespace CryptoInv.Controllers
 {
@@ -27,8 +28,23 @@ namespace CryptoInv.Controllers
         // GET: Investments
         public async Task<IActionResult> Index()
         {
+            var data = await CryptoAPI.GetDataAsync();
+
             var applicationDbContext = _context.Investments
                 .Include(i => i.Coin)
+                .Select(i => new InvestmentViewModel() {
+                    CoinId = i.CoinId,
+                    Coin = i.Coin,
+                    Amount = i.Amount,
+                    PricePerCoin = i.PricePerCoin,
+                    Cost = i.Cost,
+                    InvestmentDate = i.InvestmentDate,
+                    UserId = i.UserId,
+                    PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
+                    CostNow = (data.RAW[i.CoinId].GBP.PRICE * i.Amount),
+                    Profit = ((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost),
+                    PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR
+                })
                 .Where(i => i.UserId == _userManager.GetUserId(this.User));
             return View(await applicationDbContext.ToListAsync());
         }
