@@ -17,13 +17,11 @@ namespace CryptoInv.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly System.Security.Claims.ClaimsPrincipal _currentUser;
 
         public InvestmentsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _currentUser = this.User;
         }
 
         // GET: Investments
@@ -31,7 +29,7 @@ namespace CryptoInv.Controllers
         {
             var applicationDbContext = _context.Investments
                 .Include(i => i.Coin)
-                .Where(i => i.UserId == _userManager.GetUserId(_currentUser));
+                .Where(i => i.UserId == _userManager.GetUserId(this.User));
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,7 +44,7 @@ namespace CryptoInv.Controllers
             var investment = await _context.Investments
                 .Include(i => i.Coin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
+            if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
                 return NotFound();
             }
@@ -78,7 +76,7 @@ namespace CryptoInv.Controllers
                     PricePerCoin = investment.PricePerCoin,
                     Cost = investment.Amount * investment.PricePerCoin,
                     InvestmentDate = investment.InvestmentDate,
-                    UserId = _userManager.GetUserId(_currentUser)
+                    UserId = _userManager.GetUserId(this.User)
                 };
                 _context.Add(newInvestment);
                 await _context.SaveChangesAsync();
@@ -97,7 +95,7 @@ namespace CryptoInv.Controllers
             }
 
             var investment = await _context.Investments.FindAsync(id);
-            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
+            if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
                 return NotFound();
             }
@@ -152,7 +150,7 @@ namespace CryptoInv.Controllers
             var investment = await _context.Investments
                 .Include(i => i.Coin)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (investment == null || investment.UserId != _userManager.GetUserId(_currentUser))
+            if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
                 return NotFound();
             }
