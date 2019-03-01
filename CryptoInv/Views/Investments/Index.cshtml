@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CryptoInv.Models.Investments.InvestmentViewModel>
+﻿@model CryptoInv.Models.Investments.InvestmentIndexViewModel
 
 @{
     ViewData["Title"] = "Your Investments";
@@ -15,17 +15,17 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£0<br><span>Invested</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalInvested)<br><span>@Html.DisplayNameFor(model => model.TotalInvested)</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>+£0<br><span>Profit</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalProfit)<br><span>@Html.DisplayNameFor(model => model.TotalProfit)</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£0<br><span>Assets</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalAssets)<br><span>@Html.DisplayNameFor(model => model.TotalAssets)</span></p>
                         </div>
                     </div>
                 </div>
@@ -41,87 +41,7 @@
                 <p>
                     <a asp-action="Create">Create New</a>
                 </p>
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr class="success">
-                            <th>
-                                @Html.DisplayNameFor(model => model.Coin)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Amount)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PricePerCoin)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Cost)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.InvestmentDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PricePerCoinNow)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.CostNow)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Profit)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PriceChange24Hours)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                        <tr>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.Coin.Id)</p>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.Amount)</p>
-                            </td>
-                            <td>
-                                <p>&pound;@Html.DisplayFor(modelItem => item.PricePerCoin)</p>
-                            </td>
-                            <td>
-                                <p>&pound;@Html.DisplayFor(modelItem => item.Cost)</p>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.InvestmentDate)</p>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.PricePerCoinNow)</p>
-                            </td>
-                            <td>
-                                <p>&pound;@Html.DisplayFor(modelItem => item.CostNow)</p>
-                            </td>
-                            <td>
-                                <p>&pound;@Html.DisplayFor(modelItem => item.Profit)</p>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        Manage
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
-                                        <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
-                                        <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
+                <partial name="_InvestmentsTable" for="Investments" />
             </div>
         </div>
     </div>

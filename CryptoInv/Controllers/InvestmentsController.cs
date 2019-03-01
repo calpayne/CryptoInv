@@ -30,7 +30,7 @@ namespace CryptoInv.Controllers
         {
             var data = await CryptoAPI.GetDataAsync();
 
-            var applicationDbContext = _context.Investments
+            var applicationDbContext = await _context.Investments
                 .Include(i => i.Coin)
                 .Select(i => new InvestmentViewModel() {
                     CoinId = i.CoinId,
@@ -41,12 +41,33 @@ namespace CryptoInv.Controllers
                     InvestmentDate = i.InvestmentDate,
                     UserId = i.UserId,
                     PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
-                    CostNow = (data.RAW[i.CoinId].GBP.PRICE * i.Amount),
-                    Profit = ((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost),
+                    CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
+                    Profit = Math.Round((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost, 2),
                     PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR
                 })
-                .Where(i => i.UserId == _userManager.GetUserId(this.User));
-            return View(await applicationDbContext.ToListAsync());
+                .Where(i => i.UserId == _userManager.GetUserId(this.User))
+                .ToListAsync();
+
+            double totalInvested = 0;
+            double totalProfit = 0;
+            double totalAssets = 0;
+            foreach(InvestmentViewModel item in applicationDbContext)
+            {
+                totalInvested += item.Cost;
+                totalProfit += item.Profit;
+                totalAssets += (item.CostNow == 0 ? item.CostEnd : item.CostNow).Value;
+            }
+
+            InvestmentIndexViewModel viewModel = new InvestmentIndexViewModel()
+            {
+                TotalInvested = totalInvested,
+                TotalProfit = totalProfit,
+                TotalAssets = totalAssets,
+                Investments = applicationDbContext
+
+            };
+
+            return View(viewModel);
         }
 
         // GET: Investments/Details/5
