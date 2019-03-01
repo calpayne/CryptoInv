@@ -10,6 +10,7 @@ namespace CryptoInv.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Coin> Coins { get; set; }
+        public DbSet<Investment> Investments { get; set; }
         private IHostingEnvironment HostEnv { get; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHostingEnvironment env)
