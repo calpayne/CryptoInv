@@ -32,7 +32,12 @@ namespace CryptoInv.Controllers
                     Id = u.Id,
                     Username = u.UserName
                 })
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.Username == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             return View(user);
         }
