@@ -1,0 +1,75 @@
+﻿@model CryptoInv.Data.Investment
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Investment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Coin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Coin.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerCoin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerCoin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PricePerCoinEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PricePerCoinEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CostEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CostEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InvestmentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InvestmentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InvestmentDateEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InvestmentDateEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,71 @@
+﻿@model CryptoInv.Data.Investment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Investment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CoinId" class="control-label"></label>
+                <select asp-for="CoinId" class="form-control" asp-items="ViewBag.CoinId"></select>
+                <span asp-validation-for="CoinId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PricePerCoin" class="control-label"></label>
+                <input asp-for="PricePerCoin" class="form-control" />
+                <span asp-validation-for="PricePerCoin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PricePerCoinEnd" class="control-label"></label>
+                <input asp-for="PricePerCoinEnd" class="form-control" />
+                <span asp-validation-for="PricePerCoinEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cost" class="control-label"></label>
+                <input asp-for="Cost" class="form-control" />
+                <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CostEnd" class="control-label"></label>
+                <input asp-for="CostEnd" class="form-control" />
+                <span asp-validation-for="CostEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvestmentDate" class="control-label"></label>
+                <input asp-for="InvestmentDate" class="form-control" />
+                <span asp-validation-for="InvestmentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvestmentDateEnd" class="control-label"></label>
+                <input asp-for="InvestmentDateEnd" class="form-control" />
+                <span asp-validation-for="InvestmentDateEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
