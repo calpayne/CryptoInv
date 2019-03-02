@@ -14,17 +14,17 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£1,300<br><span>Invested</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalInvested)<br><span>@Html.DisplayNameFor(model => model.TotalInvested)</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>+£10,300<br><span>Profit</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalProfit)<br><span>@Html.DisplayNameFor(model => model.TotalProfit)</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="well well-lg">
-                            <p>£11,600<br><span>Assets</span></p>
+                            <p>&pound;@Html.DisplayFor(model => model.TotalAssets)<br><span>@Html.DisplayNameFor(model => model.TotalAssets)</span></p>
                         </div>
                     </div>
                 </div>
@@ -32,3 +32,76 @@
         </div>
     </div>
 </div>
+<div class="content investments">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#active-investments" aria-controls="active-investments" role="tab" data-toggle="tab">Active Investments</a></li>
+                    <li role="presentation"><a href="#finished-investments" aria-controls="finished-investments" role="tab" data-toggle="tab">Finished Investments</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="active-investments">
+                        <partial name="_InvestmentsProfile" for="Investments" />
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="finished-investments">
+                        <p>n/a</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-1">
+                <canvas id="chart-area" width="200" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(231,233,237)'
+    };
+
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [300, 50, 100],
+                backgroundColor: [
+                    window.chartColors.red,
+                    window.chartColors.orange,
+                    window.chartColors.blue,
+                ],
+            }],
+            labels: [
+                "BTC",
+                "ETH",
+                "DOGE"
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true,
+                labels: {
+                    padding: 20
+                },
+            },
+            tooltips: {
+                enabled: false,
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myPie = new Chart(ctx, config);
+    };
+</script>
+}

@@ -48,54 +48,6 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        window.chartColors = {
-            red: 'rgb(255, 99, 132)',
-            orange: 'rgb(255, 159, 64)',
-            yellow: 'rgb(255, 205, 86)',
-            green: 'rgb(75, 192, 192)',
-            blue: 'rgb(54, 162, 235)',
-            purple: 'rgb(153, 102, 255)',
-            grey: 'rgb(231,233,237)'
-        };
-
-        var config = {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [300, 50, 100],
-                    backgroundColor: [
-                        window.chartColors.red,
-                        window.chartColors.orange,
-                        window.chartColors.blue,
-                    ],
-                }],
-                labels: [
-                    "BTC",
-                    "ETH",
-                    "DOGE"
-                ]
-            },
-            options: {
-                responsive: true,
-                legend: {
-                    display: true,
-                    labels: {
-                        padding: 20
-                    },
-                },
-                tooltips: {
-                    enabled: false,
-                }
-            }
-        };
-
-        window.onload = function () {
-            var ctx = document.getElementById("chart-area").getContext("2d");
-            window.myPie = new Chart(ctx, config);
-        };
-    </script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<CryptoInv.Models.Investments.InvestmentViewModel>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6">
+            <div class="head">
+                <i class="cc @item.Coin.Id"></i>
+                <h3>@item.Coin.Name<br><small>@item.Amount @item.Coin.Id at £@item.PricePerCoin per</small></h3>
+            </div>
+            <div class="body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="label label-primary">£@item.Cost</span>
+                        <h5>Start</h5>
+                    </div>
+                    <div class="col-md-6 right">
+                        <span class="label label-danger">£@item.CostNow</span>
+                        <h5>Now</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
