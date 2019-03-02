@@ -10,22 +10,16 @@
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerCoin)
+                @Html.DisplayNameFor(model => model.InvestmentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvestmentDate)
+                @Html.DisplayNameFor(model => model.CostNow)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerCoinNow)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CostNowFormatted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfitFormatted)
+                @Html.DisplayNameFor(model => model.Profit)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PriceChange24Hours)
@@ -36,48 +30,42 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.Coin.Id)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.Amount)</p>
-                </td>
-                <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.PricePerCoin)</p>
-                </td>
-                <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.Cost)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.InvestmentDate)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.PricePerCoinNow)</p>
-                </td>
-                <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.CostNowFormatted)</p>
-                </td>
-                <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.ProfitFormatted)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>
-                </td>
-                <td>
-                    <div class="btn-group">
-                        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Manage
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
-                            <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
-                            <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <p><i class="cc @Html.DisplayFor(modelItem => item.Coin.Id)"></i> @Html.DisplayFor(modelItem => item.Coin.Id)</p>
+            </td>
+            <td>
+                <p>@Html.DisplayFor(modelItem => item.Amount)</p>
+            </td>
+            <td>
+                <p>@Html.DisplayFor(modelItem => item.InvestmentDate)</p>
+            </td>
+            <td>
+                <p>&pound;@Html.DisplayFor(modelItem => item.Cost)</p>
+            </td>
+            <td>
+                <p>&pound;@Html.DisplayFor(modelItem => item.CostNow)</p>
+            </td>
+            <td>
+                <p>&pound;@Html.DisplayFor(modelItem => item.Profit)</p>
+            </td>
+            <td>
+                <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Manage
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
+                        <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

@@ -24,7 +24,7 @@ namespace CryptoInv.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        
         // GET: Investments
         public async Task<IActionResult> Index()
         {
@@ -33,11 +33,14 @@ namespace CryptoInv.Controllers
             var applicationDbContext = await _context.Investments
                 .Include(i => i.Coin)
                 .Select(i => new InvestmentViewModel() {
+                    Id = i.Id,
                     CoinId = i.CoinId,
                     Coin = i.Coin,
                     Amount = i.Amount,
                     PricePerCoin = i.PricePerCoin,
+                    PricePerCoinFormatted = i.PricePerCoin.ToString("n2"),
                     Cost = i.Cost,
+                    CostFormatted = i.Cost.ToString("n2"),
                     InvestmentDate = i.InvestmentDate,
                     UserId = i.UserId,
                     PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
@@ -84,7 +87,11 @@ namespace CryptoInv.Controllers
         public IActionResult Create()
         {
             ViewData["CoinId"] = new SelectList(_context.Coins, "Id", "Name");
-            return View();
+            var investment = new InvestmentCreateViewModel()
+            {
+                InvestmentDate = DateTime.Now
+            };
+            return View(investment);
         }
 
         // POST: Investments/Create

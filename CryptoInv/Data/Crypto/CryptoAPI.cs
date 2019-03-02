@@ -23,7 +23,7 @@ namespace CryptoInv.Data.Crypto
             };
             Client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
 
-            HttpResponseMessage Response = await Client.GetAsync("data/pricemultifull?fsyms=BTC,ETH&tsyms=GBP");
+            HttpResponseMessage Response = await Client.GetAsync("data/pricemultifull?fsyms=BTC,ETH,BCH,LTC,XMR,XLM,XRP,ZEC,WAVES,DOGE,DASH,TRX&tsyms=GBP");
             Response.EnsureSuccessStatusCode();
 
             Data = await Response.Content.ReadAsAsync<CryptoAPIData>();
