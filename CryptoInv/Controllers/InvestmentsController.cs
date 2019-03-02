@@ -88,8 +88,8 @@ namespace CryptoInv.Controllers
                     CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
                     InvestmentDate = i.InvestmentDate,
                     UserId = i.UserId,
-                    ChartDataValue = new double[6],
-                    ChartDataDate = new string[6]
+                    ChartDataValue = new double[31],
+                    ChartDataDate = new string[31]
                 })
                 .FirstOrDefaultAsync(m => m.Id == id);
 

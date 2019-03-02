@@ -41,7 +41,7 @@ namespace CryptoInv.Data.Crypto
             };
             Client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
 
-            HttpResponseMessage Response = await Client.GetAsync("data/histoday?fsym=" + id + "&tsym=GBP&limit=5&aggregate=1&e=CCCAGG");
+            HttpResponseMessage Response = await Client.GetAsync("data/histoday?fsym=" + id + "&tsym=GBP&limit=30&aggregate=1&e=CCCAGG");
             Response.EnsureSuccessStatusCode();
 
             Data = await Response.Content.ReadAsAsync<CryptoAPIHistoryData>();
