@@ -1,72 +1,115 @@
-﻿@model CryptoInv.Data.Investment
+﻿@model CryptoInv.Models.Investments.InvestmentDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<div class="heading single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Details of Investment #@Model.Id</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Coin)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Coin.Id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Amount)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PricePerCoin)
+                    </dt>
+                    <dd>
+                        &pound;@Html.DisplayFor(model => model.PricePerCoin)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PricePerCoinNow)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.PricePerCoinNow)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Cost)
+                    </dt>
+                    <dd>
+                        &pound;@Html.DisplayFor(model => model.Cost)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CostNow)
+                    </dt>
+                    <dd>
+                        &pound;@Html.DisplayFor(model => model.CostNow)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.InvestmentDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.InvestmentDate)
+                    </dd>
+                </dl>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <canvas id="chart-area" width="200" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>Investment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Coin)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Coin.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PricePerCoin)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PricePerCoin)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PricePerCoinEnd)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PricePerCoinEnd)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CostEnd)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CostEnd)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.InvestmentDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.InvestmentDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.InvestmentDateEnd)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.InvestmentDateEnd)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <script type="text/javascript">
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+
+        var config = {
+            type: 'line',
+            data: {
+                datasets: [{
+                    data: [@string.Join(",", Model.ChartDataValue)],
+                    backgroundColor: [
+                        window.chartColors.green,
+                    ],
+                }],
+                labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataDate))"]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false,
+                },
+                tooltips: {
+                    enabled: true,
+                }
+            }
+        };
+
+        window.onload = function () {
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            window.myPie = new Chart(ctx, config);
+        };
+    </script>
+}

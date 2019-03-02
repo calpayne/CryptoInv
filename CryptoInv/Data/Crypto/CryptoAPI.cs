@@ -30,5 +30,23 @@ namespace CryptoInv.Data.Crypto
 
             return Data;
         }
+
+        public static async Task<CryptoAPIHistoryData> GetHistoryDataAsync(string id)
+        {
+            var Data = new CryptoAPIHistoryData();
+
+            HttpClient Client = new HttpClient
+            {
+                BaseAddress = new System.Uri("https://min-api.cryptocompare.com/")
+            };
+            Client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
+
+            HttpResponseMessage Response = await Client.GetAsync("data/histoday?fsym=" + id + "&tsym=GBP&limit=5&aggregate=1&e=CCCAGG");
+            Response.EnsureSuccessStatusCode();
+
+            Data = await Response.Content.ReadAsAsync<CryptoAPIHistoryData>();
+
+            return Data;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CryptoInv.Data;
 using CryptoInv.Data.Crypto;
 using CryptoInv.Models.Investments;
-using CryptoInv.Models.Profile;
+using CryptoInv.Models.Investments;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

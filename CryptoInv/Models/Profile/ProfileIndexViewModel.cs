@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CryptoInv.Models.Profile
+namespace CryptoInv.Models.Investments
 {
     public class ProfileIndexViewModel
     {

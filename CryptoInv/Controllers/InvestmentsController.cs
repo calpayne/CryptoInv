@@ -72,9 +72,36 @@ namespace CryptoInv.Controllers
                 return NotFound();
             }
 
+            var data = await CryptoAPI.GetDataAsync();
+
             var investment = await _context.Investments
                 .Include(i => i.Coin)
+                .Select(i => new InvestmentDetailsViewModel()
+                {
+                    Id = i.Id,
+                    CoinId = i.CoinId,
+                    Coin = i.Coin,
+                    Amount = i.Amount,
+                    PricePerCoin = i.PricePerCoin,
+                    PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
+                    Cost = i.Cost,
+                    CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
+                    InvestmentDate = i.InvestmentDate,
+                    UserId = i.UserId,
+                    ChartDataValue = new double[6],
+                    ChartDataDate = new string[6]
+                })
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            int count = 0;
+            var profitHistory = await CryptoAPI.GetHistoryDataAsync(investment.CoinId);
+            foreach (Datum item in profitHistory.Data)
+            {
+                investment.ChartDataDate[count] = item.TimeFormatted;
+                investment.ChartDataValue[count] = Math.Round(investment.Amount * item.close, 2);
+                count++;
+            }
+
             if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
                 return NotFound();
