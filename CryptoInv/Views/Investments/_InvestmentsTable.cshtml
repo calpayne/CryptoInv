@@ -22,10 +22,10 @@
                 @Html.DisplayNameFor(model => model.PricePerCoinNow)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CostNow)
+                @Html.DisplayNameFor(model => model.CostNowFormatted)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Profit)
+                @Html.DisplayNameFor(model => model.ProfitFormatted)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PriceChange24Hours)
@@ -56,10 +56,10 @@
                     <p>@Html.DisplayFor(modelItem => item.PricePerCoinNow)</p>
                 </td>
                 <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.CostNow)</p>
+                    <p>&pound;@Html.DisplayFor(modelItem => item.CostNowFormatted)</p>
                 </td>
                 <td>
-                    <p>&pound;@Html.DisplayFor(modelItem => item.Profit)</p>
+                    <p>&pound;@Html.DisplayFor(modelItem => item.ProfitFormatted)</p>
                 </td>
                 <td>
                     <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>

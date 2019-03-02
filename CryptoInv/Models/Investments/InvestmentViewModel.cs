@@ -39,6 +39,9 @@ namespace CryptoInv.Models.Investments
         [Display(Name = "Cost Now"), Required]
         public double CostNow { get; set; }
 
+        [Display(Name = "Cost Now"), Required]
+        public string CostNowFormatted { get; set; }
+
         [Display(Name = "Investment Date"), DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true), Required]
         public DateTime InvestmentDate { get; set; }
 
@@ -47,6 +50,9 @@ namespace CryptoInv.Models.Investments
 
         [Display(Name = "Profit"), Required]
         public double Profit { get; set; }
+
+        [Display(Name = "Profit"), Required]
+        public string ProfitFormatted { get; set; }
 
         [Display(Name = "24 Hour Change"), Required]
         public string PriceChange24Hours { get; set; }

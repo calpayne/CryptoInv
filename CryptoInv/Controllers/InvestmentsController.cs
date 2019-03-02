@@ -42,29 +42,20 @@ namespace CryptoInv.Controllers
                     UserId = i.UserId,
                     PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
                     CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
+                    CostNowFormatted = (data.RAW[i.CoinId].GBP.PRICE * i.Amount).ToString("n2"),
                     Profit = Math.Round((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost, 2),
+                    ProfitFormatted = ((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost).ToString("n2"),
                     PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR
                 })
                 .Where(i => i.UserId == _userManager.GetUserId(this.User))
                 .ToListAsync();
 
-            double totalInvested = 0;
-            double totalProfit = 0;
-            double totalAssets = 0;
-            foreach(InvestmentViewModel item in applicationDbContext)
-            {
-                totalInvested += item.Cost;
-                totalProfit += item.Profit;
-                totalAssets += (item.CostNow == 0 ? item.CostEnd : item.CostNow).Value;
-            }
-
             InvestmentIndexViewModel viewModel = new InvestmentIndexViewModel()
             {
-                TotalInvested = totalInvested,
-                TotalProfit = totalProfit,
-                TotalAssets = totalAssets,
+                TotalInvested = applicationDbContext.Sum(t => t.Cost).ToString("n2"),
+                TotalProfit = applicationDbContext.Sum(t => t.Profit).ToString("n2"),
+                TotalAssets = applicationDbContext.Sum(t => t.CostNow).ToString("n2"),
                 Investments = applicationDbContext
-
             };
 
             return View(viewModel);
