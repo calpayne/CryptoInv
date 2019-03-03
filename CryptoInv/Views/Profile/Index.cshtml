@@ -60,30 +60,40 @@
 <script type="text/javascript">
     window.chartColors = {
         red: 'rgb(255, 99, 132)',
+        dark_red: 'rgb(231, 76, 60)',
         orange: 'rgb(255, 159, 64)',
+        dark_orange: 'rgb(243, 156, 18)',
         yellow: 'rgb(255, 205, 86)',
         green: 'rgb(75, 192, 192)',
         blue: 'rgb(54, 162, 235)',
+        other_blue: 'rgb(52, 152, 219)',
         purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(231,233,237)'
+        pink: 'rgb(255, 102, 102)',
+        navy: 'rgb(44, 62, 80)',
+        light_purple: 'rgb(178, 102, 178)'
     };
 
     var config = {
         type: 'doughnut',
         data: {
             datasets: [{
-                data: [300, 50, 100],
+                data: [@string.Join(",", Model.ChartDataValue)],
                 backgroundColor: [
                     window.chartColors.red,
                     window.chartColors.orange,
                     window.chartColors.blue,
+                    window.chartColors.yellow,
+                    window.chartColors.green,
+                    window.chartColors.purple,
+                    window.chartColors.navy,
+                    window.chartColors.dark_red,
+                    window.chartColors.dark_orange,
+                    window.chartColors.other_blue,
+                    window.chartColors.pink,
+                    window.chartColors.light_purple
                 ],
             }],
-            labels: [
-                "BTC",
-                "ETH",
-                "DOGE"
-            ]
+            labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataLabel))"]
         },
         options: {
             responsive: true,

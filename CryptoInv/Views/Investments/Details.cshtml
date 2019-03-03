@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Details of Investment [@Model.Amount @Model.CoinId bought for £@Model.Cost.ToString("n2")]</h3>
+                <h3>Details of Investment</h3>
             </div>
         </div>
     </div>
@@ -66,11 +66,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div style="width: 100%">
+                <div style="height: 300px; width: 100%">
                     <canvas id="chart-area2"></canvas>
-                </div>
-                <div class="mt-5" style="width: 100%">
-                    <canvas id="chart-area3"></canvas>
                 </div>
             </div>
         </div>
@@ -83,24 +80,12 @@
 
 @section Scripts {
 <script type="text/javascript">
-        window.chartColors = {
-            red: 'rgba(255, 99, 132, 0.5)',
-            orange: 'rgba(255, 159, 64, 0.5)',
-            yellow: 'rgba(255, 205, 86, 0.5)',
-            green: 'rgba(24,188,156, 0.5)',
-            blue: 'rgba(54, 162, 235, 0.5)',
-            purple: 'rgba(153, 102, 255, 0.5)',
-            grey: 'rgba(231,233,237, 0.5)'
-        };
-
         var config = {
             type: 'line',
             data: {
                 datasets: [{
                     data: [@string.Join(",", Model.ChartDataValue)],
-                    backgroundColor: [
-                        window.chartColors.green,
-                    ],
+                    backgroundColor: ['rgba(24,188,156, 0.5)'],
                 }],
                 labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataDate))"]
             },
@@ -114,7 +99,7 @@
                     enabled: true,
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
+                            return "£" + data['datasets'][0]['data'][tooltipItem['index']].toFixed(2);
                         }
                     }
                 },
@@ -134,13 +119,9 @@
             data: {
                 datasets: [{
                     data: [@Model.Profit, @Model.Profit1High, @Model.Profit1Low, @Model.Profit24Low.Replace(",", ""), @Model.Profit24High.Replace(",", "")],
-                    backgroundColor: [
-                        window.chartColors.blue,
-                        window.chartColors.green,
-                        window.chartColors.red,
-                    ]
+                    backgroundColor: ['rgba(24,188,156, 0.5)']
                 }],
-                labels: ["Current Profit", "Profit 1h High", "Profit 1h Low", "Profit 24h Low", "Profit 24h High"]
+                labels: ["Worth", "1h High", "1h Low", "24h Low", "24h High"]
             },
             options: {
                 responsive: true,
@@ -157,50 +138,9 @@
                     enabled: true,
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
+                            return "£" + data['datasets'][0]['data'][tooltipItem['index']].toFixed(2);
                         }
                     }
-                }
-            }
-        };
-
-        var config3 = {
-            type: 'line',
-            data: {
-                datasets: [{
-                    data: [@string.Join(",", Model.ChartDataValue)],
-                    backgroundColor: [
-                        window.chartColors.green,
-                    ],
-                }],
-                labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataDate))"]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    enabled: true,
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
-                        }
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        display: true
-                    }],
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            callback: function (value, index, values) {
-                                return '£' + value;
-                            }
-                        }
-                    }]
                 }
             }
         };
@@ -211,9 +151,6 @@
 
             var ctx = document.getElementById("chart-area2").getContext("2d");
             window.myPie = new Chart(ctx, config2);
-
-            var ctx = document.getElementById("chart-area3").getContext("2d");
-            window.myPie = new Chart(ctx, config3);
         };
 </script>
 }

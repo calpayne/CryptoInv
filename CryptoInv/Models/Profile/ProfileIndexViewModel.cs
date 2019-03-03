@@ -9,6 +9,10 @@ namespace CryptoInv.Models.Investments
 {
     public class ProfileIndexViewModel
     {
+        public double[] ChartDataValue { get; set; }
+
+        public string[] ChartDataLabel { get; set; }
+
         [Display(Name = "Id"), Required]
         public string Id { get; set; }
 
