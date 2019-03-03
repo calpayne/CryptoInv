@@ -19,14 +19,7 @@
             <div class="col-md-4">
                 <div class="coin">
                     <h3><i class="cc @Model.Coin.Id"></i> @Model.Coin.Name <small>(@Model.Coin.Id)</small></h3>
-                    @if (double.Parse(Model.PriceChange24Hours) < 0)
-                    {
-                        <h4>@Model.PricePerCoinNow <small class="text-danger">(@Model.PriceChange24Hours%)</small></h4>
-                    }
-                    else
-                    {
-                        <h4>@Model.PricePerCoinNow <small class="text-success">(@Model.PriceChange24Hours%)</small></h4>
-                    }
+                    <h4>@Model.PricePerCoinNow <small class="@(double.Parse(Model.PriceChange24Hours) < 0 ? "text-danger" : "text-success")">(@Model.PriceChange24Hours%)</small></h4>
                 </div>
             </div>
             <div class="col-md-2">
