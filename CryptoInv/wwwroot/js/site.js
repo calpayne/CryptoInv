@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $('.table').DataTable({
+    $('.table-data').DataTable({
         'aoColumnDefs': [{
             'bSortable': false,
             'aTargets': [-1]

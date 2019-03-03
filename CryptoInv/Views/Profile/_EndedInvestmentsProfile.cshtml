@@ -4,7 +4,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <h5>No active Investments to show.</h5>
+            <h5>No ended Investments to show.</h5>
         </div>
     </div>
 }
@@ -25,15 +25,15 @@ else
                             <h5>Start</h5>
                         </div>
                         <div class="col-md-6 right">
-                            @if (item.CostNow < item.Cost)
+                            @if (item.CostEnd < item.Cost)
                             {
-                                <span class="label label-danger">£@item.CostNow</span>
+                                <span class="label label-danger">£@item.CostEnd</span>
                             }
                             else
                             {
-                                <span class="label label-success">£@item.CostNow</span>
+                                <span class="label label-success">£@item.CostEnd</span>
                             }
-                            <h5>Now</h5>
+                            <h5>End</h5>
                         </div>
                     </div>
                 </div>

@@ -88,10 +88,21 @@ namespace CryptoInv.Controllers
                     CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
                     InvestmentDate = i.InvestmentDate,
                     UserId = i.UserId,
+                    PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR,
+                    Hour24High = data.DISPLAY[i.CoinId].GBP.HIGH24HOUR,
+                    Hour24Low = data.DISPLAY[i.CoinId].GBP.LOW24HOUR,
+                    Volume24 = data.DISPLAY[i.CoinId].GBP.VOLUME24HOUR,
+                    MarketCap = data.DISPLAY[i.CoinId].GBP.MKTCAP,
                     ChartDataValue = new double[31],
                     ChartDataDate = new string[31]
                 })
+                .Where(i => i.UserId == _userManager.GetUserId(this.User))
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (investment == null)
+            {
+                return NotFound();
+            }
 
             int count = 0;
             var profitHistory = await CryptoAPI.GetHistoryDataAsync(investment.CoinId);
@@ -100,11 +111,6 @@ namespace CryptoInv.Controllers
                 investment.ChartDataDate[count] = item.TimeFormatted;
                 investment.ChartDataValue[count] = Math.Round(investment.Amount * item.close, 2);
                 count++;
-            }
-
-            if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
-            {
-                return NotFound();
             }
 
             return View(investment);

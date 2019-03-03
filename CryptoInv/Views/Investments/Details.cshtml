@@ -13,6 +13,37 @@
         </div>
     </div>
 </div>
+<div class="content-small grey">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="coin">
+                    <h3><i class="cc @Model.Coin.Id"></i> @Model.Coin.Name <small>(@Model.Coin.Id)</small></h3>
+                    @if (double.Parse(Model.PriceChange24Hours) < 0)
+                    {
+                        <h4>@Model.PricePerCoinNow <small class="text-danger">(@Model.PriceChange24Hours%)</small></h4>
+                    }
+                    else
+                    {
+                        <h4>@Model.PricePerCoinNow <small class="text-success">(@Model.PriceChange24Hours%)</small></h4>
+                    }
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4 class="mt-2">@Html.DisplayFor(model => model.Hour24High)<br /><small>@Html.DisplayNameFor(model => model.Hour24High)</small></h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="mt-2">@Html.DisplayFor(model => model.Hour24Low)<br /><small>@Html.DisplayNameFor(model => model.Hour24Low)</small></h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="mt-2">@Html.DisplayFor(model => model.Volume24)<br /><small>@Html.DisplayNameFor(model => model.Volume24)</small></h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="mt-2">@Html.DisplayFor(model => model.MarketCap)<br /><small>@Html.DisplayNameFor(model => model.MarketCap)</small></h4>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="content">
     <div class="container">
         <div class="row">
@@ -22,7 +53,7 @@
                         @Html.DisplayNameFor(model => model.Coin)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.Coin.Id)
+                        @Html.DisplayFor(model => model.Coin.Name) (@Html.DisplayFor(model => model.Coin.Id))
                     </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.Amount)
@@ -67,7 +98,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <canvas id="chart-area" width="200" height="200"></canvas>
+                <canvas id="chart-area" height="200"></canvas>
             </div>
         </div>
     </div>
@@ -98,6 +129,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: false,
                 },

@@ -15,10 +15,10 @@ namespace CryptoInv.Models.Investments
         [Display(Name = "Coin"), Required]
         public string CoinId { get; set; }
 
-        [Display(Name = "Amount"), Required]
+        [Display(Name = "Amount"), Range(0.00000001, Double.MaxValue), Required]
         public double Amount { get; set; }
 
-        [Display(Name = "Coin Price"), Required]
+        [Display(Name = "Coin Price"), Range(0.00001, Double.MaxValue), Required]
         public double PricePerCoin { get; set; }
 
         [Display(Name = "Investment Date"), Required]
