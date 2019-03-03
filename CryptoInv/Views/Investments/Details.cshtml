@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Details of Investment [@Model.Amount @Model.CoinId bought at £@Model.Cost]</h3>
+                <h3>Details of Investment [@Model.Amount @Model.CoinId bought for £@Model.Cost]</h3>
             </div>
         </div>
     </div>
@@ -91,41 +91,10 @@
                 <table class="table table-striped investment-details">
                     <thead>
                         <tr class="success">
-                            <th colspan="2">Profit Info</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td scope="row">@Html.DisplayNameFor(model => model.Profit)</td>
-                            <td>£@Html.DisplayFor(model => model.Profit)</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Profit @Html.DisplayNameFor(model => model.PriceChange24Hours)</td>
-                            <td>@Html.DisplayFor(model => model.PriceChange24Hours)%</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">@Html.DisplayNameFor(model => model.Profit24High)</td>
-                            <td>£@Html.DisplayFor(model => model.Profit24High)</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">@Html.DisplayNameFor(model => model.Profit24Low)</td>
-                            <td>£@Html.DisplayFor(model => model.Profit24Low)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-4">
-                <table class="table table-striped investment-details">
-                    <thead>
-                        <tr class="success">
                             <th colspan="2">Coin Info</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">@Html.DisplayNameFor(model => model.Coin)</td>
-                            <td>@Html.DisplayFor(model => model.Coin.Name) (@Html.DisplayFor(model => model.Coin.Id))</td>
-                        </tr>
                         <tr>
                             <td scope="row">@Html.DisplayNameFor(model => model.PricePerCoinNow)</td>
                             <td>@Html.DisplayFor(model => model.PricePerCoinNow)</td>
@@ -153,20 +122,28 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-md-4">
+                <div style="width: 100%">
+                    <canvas id="chart-area2"></canvas>
+                </div>
+                <div class="mt-2" style="width: 100%">
+                    <canvas id="chart-area3"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
+<script type="text/javascript">
         window.chartColors = {
-            red: 'rgb(255, 99, 132)',
-            orange: 'rgb(255, 159, 64)',
-            yellow: 'rgb(255, 205, 86)',
-            green: 'rgb(75, 192, 192)',
-            blue: 'rgb(54, 162, 235)',
-            purple: 'rgb(153, 102, 255)',
-            grey: 'rgb(231,233,237)'
+            red: 'rgba(255, 99, 132, 0.5)',
+            orange: 'rgba(255, 159, 64, 0.5)',
+            yellow: 'rgba(255, 205, 86, 0.5)',
+            green: 'rgba(24,188,156, 0.5)',
+            blue: 'rgba(54, 162, 235, 0.5)',
+            purple: 'rgba(153, 102, 255, 0.5)',
+            grey: 'rgba(231,233,237, 0.5)'
         };
 
         var config = {
@@ -187,7 +164,12 @@
                     display: false
                 },
                 tooltips: {
-                    enabled: true
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
+                        }
+                    }
                 },
                 scales: {
                     xAxes: [{
@@ -200,9 +182,91 @@
             }
         };
 
+        var config2 = {
+            type: 'radar',
+            data: {
+                datasets: [{
+                    data: [@Model.Profit, @Model.Profit1High, @Model.Profit1Low, @Model.Profit24Low.Replace(",", ""), @Model.Profit24High.Replace(",", "")],
+                    backgroundColor: [
+                        window.chartColors.blue,
+                        window.chartColors.green,
+                        window.chartColors.red,
+                    ]
+                }],
+                labels: ["Current Profit", "Profit 1h High", "Profit 1h Low", "Profit 24h Low", "Profit 24h High"]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                scale: {
+                    ticks: {
+                        display: false
+                    }
+                },
+                tooltips: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
+                        }
+                    }
+                }
+            }
+        };
+
+        var config3 = {
+            type: 'line',
+            data: {
+                datasets: [{
+                    data: [@string.Join(",", Model.ChartDataValue)],
+                    backgroundColor: [
+                        window.chartColors.green,
+                    ],
+                }],
+                labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataDate))"]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: true,
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return "£" + data['datasets'][0]['data'][tooltipItem['index']];
+                        }
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        display: true
+                    }],
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            callback: function (value, index, values) {
+                                return '£' + value;
+                            }
+                        }
+                    }]
+                }
+            }
+        };
+
         window.onload = function () {
             var ctx = document.getElementById("chart-area").getContext("2d");
             window.myPie = new Chart(ctx, config);
+
+            var ctx = document.getElementById("chart-area2").getContext("2d");
+            window.myPie = new Chart(ctx, config2);
+
+            var ctx = document.getElementById("chart-area3").getContext("2d");
+            window.myPie = new Chart(ctx, config3);
         };
-    </script>
+</script>
 }

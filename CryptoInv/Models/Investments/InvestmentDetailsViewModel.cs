@@ -15,8 +15,14 @@ namespace CryptoInv.Models.Investments
         [Display(Name = "Profit 24h High")]
         public string Profit24High { get; set; }
 
+        [Display(Name = "Profit 1h High")]
+        public double Profit1High { get; set; }
+
         [Display(Name = "Profit 24h Low")]
         public string Profit24Low { get; set; }
+
+        [Display(Name = "Profit 1h Low")]
+        public double Profit1Low { get; set; }
 
         [Display(Name = "24h High")]
         public string Hour24High { get; set; }
