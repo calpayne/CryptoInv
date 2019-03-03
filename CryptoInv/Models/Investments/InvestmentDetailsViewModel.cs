@@ -12,14 +12,23 @@ namespace CryptoInv.Models.Investments
 
         public string[] ChartDataDate { get; set; }
 
-        [Display(Name = "24 High")]
+        [Display(Name = "Profit 24h High")]
+        public string Profit24High { get; set; }
+
+        [Display(Name = "Profit 24h Low")]
+        public string Profit24Low { get; set; }
+
+        [Display(Name = "24h High")]
         public string Hour24High { get; set; }
 
-        [Display(Name = "24 Low")]
+        [Display(Name = "24h Low")]
         public string Hour24Low { get; set; }
 
-        [Display(Name = "24 Volume")]
+        [Display(Name = "24h Volume")]
         public string Volume24 { get; set; }
+
+        [Display(Name = "Supply")]
+        public string Supply { get; set; }
 
         [Display(Name = "Market Cap")]
         public string MarketCap { get; set; }
