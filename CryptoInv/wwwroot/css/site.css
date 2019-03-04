@@ -156,15 +156,29 @@
 .investments .body h5 {
     margin: 5px 0 0 0;
 }
+.table > thead > tr > th {
+    padding: 20px;
+}
 td p {
-    padding: 15px 0;
+    padding: 15px 5px;
     margin: 0;
+}
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    position: absolute;
+    bottom: 18px;
+    right: 20px;
+    display: block;
+    font-family: 'Glyphicons Halflings';
+    opacity: 0.5;
 }
 .investment-details td[scope=row] {
     font-weight: 600;
 }
 .mt-2 {
     margin-top: 20px;
+}
+.mb-2 {
+    margin-bottom: 20px;
 }
 .mt-5 {
     margin-top: 50px;

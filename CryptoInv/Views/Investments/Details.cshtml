@@ -50,10 +50,10 @@
                     <h3>@Model.Amount @Model.CoinId <small>@Html.DisplayFor(model => model.InvestmentDate)</small></h3>
                     <hr />
                     <h4>You paid,</h4>
-                    <h3>£@Model.Cost.ToString("n2") <small>£@Model.PricePerCoin.ToString("n2") per coin</small></h3>
+                    <h3>£@(Model.Cost >= 0.01 ? Model.Cost.ToString("n2") : Model.Cost.ToString()) <small>£@(Model.PricePerCoin >= 0.01 ? Model.PricePerCoin.ToString("n2") : Model.PricePerCoin.ToString()) per coin</small></h3>
                     <hr />
                     <h4>You have a,</h4>
-                    <h3>£@Model.Profit.ToString("n2") <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
+                    <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
                 </div>
             </div>
             <div class="col-md-4">
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="mt-2">
             <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
             <a asp-action="Index">Back to List</a>
         </div>
@@ -99,7 +99,7 @@
                     enabled: true,
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            return "£" + data['datasets'][0]['data'][tooltipItem['index']].toFixed(2);
+                            return "Worth: £" + data['datasets'][0]['data'][tooltipItem['index']].toFixed(2);
                         }
                     }
                 },
@@ -121,7 +121,7 @@
                     data: [@Model.Profit, @Model.Profit1High, @Model.Profit1Low, @Model.Profit24Low.Replace(",", ""), @Model.Profit24High.Replace(",", "")],
                     backgroundColor: ['rgba(24,188,156, 0.5)']
                 }],
-                labels: ["Worth", "1h High", "1h Low", "24h Low", "24h High"]
+                labels: ["Profit", "1h High", "1h Low", "24h Low", "24h High"]
             },
             options: {
                 responsive: true,

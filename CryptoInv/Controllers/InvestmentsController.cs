@@ -103,6 +103,7 @@ namespace CryptoInv.Controllers
                     ChartDataValue = new double[31],
                     ChartDataDate = new string[31]
                 })
+                .Where(i => i.InvestmentDateEnd == null)
                 .Where(i => i.UserId == _userManager.GetUserId(this.User))
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -169,12 +170,24 @@ namespace CryptoInv.Controllers
                 return NotFound();
             }
 
-            var investment = await _context.Investments.FindAsync(id);
+            var investment = await _context.Investments
+                                    .Select(i => new InvestmentEditViewModel() {
+                                        Id = i.Id,
+                                        CoinId = i.CoinId,
+                                        Amount = i.Amount,
+                                        Cost = i.Cost,
+                                        PricePerCoin = i.PricePerCoin,
+                                        InvestmentDate = i.InvestmentDate,
+                                        InvestmentDateEnd = i.InvestmentDateEnd,
+                                        UserId = _userManager.GetUserId(this.User)
+                                    })
+                                    .Where(i => i.InvestmentDateEnd == null)
+                                    .FirstOrDefaultAsync(i => i.Id == id);
             if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
                 return NotFound();
             }
-            ViewData["CoinId"] = new SelectList(_context.Coins, "Id", "Id", investment.CoinId);
+            ViewData["CoinId"] = new SelectList(_context.Coins, "Id", "Name", investment.CoinId);
             return View(investment);
         }
 
@@ -183,7 +196,7 @@ namespace CryptoInv.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CoinId,Amount,PricePerCoin,PricePerCoinEnd,Cost,CostEnd,InvestmentDate,InvestmentDateEnd,UserId")] Investment investment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CoinId,Amount,PricePerCoin,InvestmentDate")] InvestmentEditViewModel investment)
         {
             if (id != investment.Id)
             {
@@ -194,7 +207,18 @@ namespace CryptoInv.Controllers
             {
                 try
                 {
-                    _context.Update(investment);
+                    var newInvestment = new Investment()
+                    {
+                        Id = investment.Id,
+                        CoinId = investment.CoinId,
+                        Amount = investment.Amount,
+                        PricePerCoin = investment.PricePerCoin,
+                        Cost = investment.Amount * investment.PricePerCoin,
+                        InvestmentDate = investment.InvestmentDate,
+                        UserId = _userManager.GetUserId(this.User)
+                    };
+
+                    _context.Update(newInvestment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -210,7 +234,7 @@ namespace CryptoInv.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CoinId"] = new SelectList(_context.Coins, "Id", "Id", investment.CoinId);
+            ViewData["CoinId"] = new SelectList(_context.Coins, "Id", "Name", investment.CoinId);
             return View(investment);
         }
 
@@ -224,23 +248,16 @@ namespace CryptoInv.Controllers
 
             var investment = await _context.Investments
                 .Include(i => i.Coin)
+                .Where(i => i.InvestmentDateEnd == null)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (investment == null || investment.UserId != _userManager.GetUserId(this.User))
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(investment);
-        }
-
-        // POST: Investments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var investment = await _context.Investments.FindAsync(id);
             _context.Investments.Remove(investment);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

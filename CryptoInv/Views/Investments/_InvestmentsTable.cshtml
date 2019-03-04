@@ -41,18 +41,18 @@
                 <p>@Html.DisplayFor(modelItem => item.InvestmentDate)</p>
             </td>
             <td>
-                <p>&pound;@Html.DisplayFor(modelItem => item.Cost)</p>
+                <p>&pound;@(item.Cost >= 0.01 ? item.Cost.ToString("n2") : item.Cost.ToString())</p>
             </td>
             <td>
-                <p>&pound;@Html.DisplayFor(modelItem => item.CostNow)</p>
+                <p>&pound;@(item.CostNow >= 0.01 ? item.CostNow.ToString("n2") : item.CostNow.ToString())</p>
             </td>
             <td>
-                <p>&pound;@Html.DisplayFor(modelItem => item.Profit)</p>
+                <p>&pound;@(item.Profit >= 0.01 ? item.Profit.ToString("n2") : item.Profit.ToString())</p>
             </td>
             <td>
                 <p>@Html.DisplayFor(modelItem => item.PriceChange24Hours)%</p>
             </td>
-            <td>
+            <td class="text-center">
                 <div class="btn-group">
                     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         Manage
@@ -61,7 +61,7 @@
                     <ul class="dropdown-menu">
                         <li><a asp-action="Edit" asp-route-id="@item.Id">Edit</a></li>
                         <li><a asp-action="Details" asp-route-id="@item.Id">Details</a></li>
-                        <li><a asp-action="Delete" asp-route-id="@item.Id">Delete</a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Id" OnClick="return confirm('Are you sure you want to delete this investment?');">Delete</a></li>
                     </ul>
                 </div>
             </td>
