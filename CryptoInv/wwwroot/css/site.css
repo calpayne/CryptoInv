@@ -183,6 +183,9 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 .mt-5 {
     margin-top: 50px;
 }
+.pt-1 {
+    padding-top: 10px;
+}
 @media screen and (min-width: 1600px) {
     .container-fluid {
         padding-right: 150px;

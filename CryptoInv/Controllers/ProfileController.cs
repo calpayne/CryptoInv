@@ -44,6 +44,8 @@ namespace CryptoInv.Controllers
 
             var investments = await _context.Investments
                 .Include(i => i.Coin)
+                .Where(i => i.UserId == user.Id)
+                .Where(i => i.InvestmentDateEnd == null)
                 .Select(i => new InvestmentViewModel()
                 {
                     Id = i.Id,
@@ -64,12 +66,12 @@ namespace CryptoInv.Controllers
                     ProfitFormatted = ((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost).ToString("n2"),
                     PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR,
                 })
-                .Where(i => i.UserId == user.Id)
-                .Where(i => i.InvestmentDateEnd == null)
                 .ToListAsync();
 
             var endedInvestments = await _context.Investments
                 .Include(i => i.Coin)
+                .Where(i => i.UserId == user.Id)
+                .Where(i => i.InvestmentDateEnd != null)
                 .Select(i => new InvestmentViewModel()
                 {
                     Id = i.Id,
@@ -82,13 +84,11 @@ namespace CryptoInv.Controllers
                     CostFormatted = i.Cost.ToString("n2"),
                     InvestmentDate = i.InvestmentDate,
                     UserId = i.UserId,
-                    InvestmentDateEnd = i.InvestmentDateEnd,
-                    PricePerCoinEnd = i.PricePerCoinEnd,
-                    CostEnd = i.CostEnd,
+                    InvestmentDateEnd = i.InvestmentDateEnd.Value,
+                    PricePerCoinEnd = i.PricePerCoinEnd.Value,
+                    CostEnd = i.CostEnd.Value,
                     Profit = Math.Round(i.CostEnd.Value - i.Cost, 2)
                 })
-                .Where(i => i.UserId == user.Id)
-                .Where(i => i.InvestmentDateEnd != null)
                 .ToListAsync();
 
             ProfileIndexViewModel viewModel = new ProfileIndexViewModel()
@@ -97,7 +97,7 @@ namespace CryptoInv.Controllers
                 Username = user.Username,
                 TotalInvested = (investments.Sum(t => t.Cost) + endedInvestments.Sum(t => t.Cost)).ToString("n2"),
                 TotalProfit = (investments.Sum(t => t.Profit) + endedInvestments.Sum(t => t.Profit)).ToString("n2"),
-                TotalAssets = (investments.Sum(t => t.CostNow) + endedInvestments.Sum(t => t.CostEnd).Value).ToString("n2"),
+                TotalAssets = (investments.Sum(t => t.CostNow) + endedInvestments.Sum(t => t.CostEnd.Value)).ToString("n2"),
                 Investments = investments,
                 EndedInvestments = endedInvestments,
                 ChartDataLabel = await _context.Coins.Select(c => c.Id).ToArrayAsync(),
@@ -107,7 +107,11 @@ namespace CryptoInv.Controllers
             int count = 0;
             foreach (string s in viewModel.ChartDataLabel)
             {
-                viewModel.ChartDataValue[count] = _context.Investments.Where(i => i.CoinId == s).Count();
+                viewModel.ChartDataValue[count] = _context.Investments
+                                                    .Where(i => i.UserId == user.Id)
+                                                    .Where(i => i.InvestmentDateEnd == null)
+                                                    .Where(i => i.CoinId == s)
+                                                    .Count();
                 count++;
             }
 

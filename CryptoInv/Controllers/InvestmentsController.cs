@@ -30,8 +30,10 @@ namespace CryptoInv.Controllers
         {
             var data = await CryptoAPI.GetDataAsync();
 
-            var applicationDbContext = await _context.Investments
+            var investments = await _context.Investments
                 .Include(i => i.Coin)
+                .Where(i => i.InvestmentDateEnd == null)
+                .Where(i => i.UserId == _userManager.GetUserId(this.User))
                 .Select(i => new InvestmentViewModel() {
                     Id = i.Id,
                     CoinId = i.CoinId,
@@ -50,15 +52,38 @@ namespace CryptoInv.Controllers
                     ProfitFormatted = ((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost).ToString("n2"),
                     PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR
                 })
+                .ToListAsync();
+
+            var endedInvestments = await _context.Investments
+                .Include(i => i.Coin)
                 .Where(i => i.UserId == _userManager.GetUserId(this.User))
+                .Where(i => i.InvestmentDateEnd != null)
+                .Select(i => new InvestmentViewModel()
+                {
+                    Id = i.Id,
+                    CoinId = i.CoinId,
+                    Coin = i.Coin,
+                    Amount = i.Amount,
+                    PricePerCoin = i.PricePerCoin,
+                    PricePerCoinFormatted = i.PricePerCoin.ToString("n2"),
+                    Cost = i.Cost,
+                    CostFormatted = i.Cost.ToString("n2"),
+                    InvestmentDate = i.InvestmentDate,
+                    UserId = i.UserId,
+                    InvestmentDateEnd = i.InvestmentDateEnd.Value,
+                    PricePerCoinEnd = i.PricePerCoinEnd.Value,
+                    CostEnd = i.CostEnd.Value,
+                    Profit = Math.Round(i.CostEnd.Value - i.Cost, 2)
+                })
                 .ToListAsync();
 
             InvestmentIndexViewModel viewModel = new InvestmentIndexViewModel()
             {
-                TotalInvested = applicationDbContext.Sum(t => t.Cost).ToString("n2"),
-                TotalProfit = applicationDbContext.Sum(t => t.Profit).ToString("n2"),
-                TotalAssets = applicationDbContext.Sum(t => t.CostNow).ToString("n2"),
-                Investments = applicationDbContext
+                TotalInvested = (investments.Sum(t => t.Cost) + endedInvestments.Sum(t => t.Cost)).ToString("n2"),
+                TotalProfit = (investments.Sum(t => t.Profit) + endedInvestments.Sum(t => t.Profit)).ToString("n2"),
+                TotalAssets = (investments.Sum(t => t.CostNow) + endedInvestments.Sum(t => t.CostEnd.Value)).ToString("n2"),
+                Investments = investments,
+                EndedInvestments = endedInvestments
             };
 
             return View(viewModel);

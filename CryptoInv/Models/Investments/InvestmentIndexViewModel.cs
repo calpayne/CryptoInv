@@ -20,5 +20,8 @@ namespace CryptoInv.Models.Investments
 
         [Display(Name = "Investments"), Required]
         public List<InvestmentViewModel> Investments { get; set; }
+
+        [Display(Name = "Ended Investments"), Required]
+        public List<InvestmentViewModel> EndedInvestments { get; set; }
     }
 }

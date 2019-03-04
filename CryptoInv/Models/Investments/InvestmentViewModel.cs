@@ -39,7 +39,7 @@ namespace CryptoInv.Models.Investments
         [Display(Name = "Paid"), Required]
         public string CostFormatted { get; set; }
 
-        [Display(Name = "End Cost")]
+        [Display(Name = "Sold For")]
         public double? CostEnd { get; set; }
 
         [Display(Name = "Worth"), Required]
