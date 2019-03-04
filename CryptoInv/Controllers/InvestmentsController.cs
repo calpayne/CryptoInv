@@ -109,15 +109,17 @@ namespace CryptoInv.Controllers
                     Amount = i.Amount,
                     PricePerCoin = i.PricePerCoin,
                     PricePerCoinNow = data.DISPLAY[i.CoinId].GBP.PRICE,
-                    Profit = Math.Round((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost, 2),
+                    Profit = i.InvestmentDateEnd == null ? Math.Round((data.RAW[i.CoinId].GBP.PRICE * i.Amount) - i.Cost, 2) : Math.Round(i.CostEnd.Value - i.Cost, 2),
                     Profit24High = ((data.RAW[i.CoinId].GBP.HIGH24HOUR * i.Amount) - i.Cost).ToString("n2"),
                     Profit1High = Math.Round((data.RAW[i.CoinId].GBP.HIGHHOUR * i.Amount) - i.Cost, 2),
                     Profit24Low = ((data.RAW[i.CoinId].GBP.LOW24HOUR * i.Amount) - i.Cost).ToString("n2"),
                     Profit1Low = Math.Round((data.RAW[i.CoinId].GBP.LOWHOUR * i.Amount) - i.Cost, 2),
                     Cost = i.Cost,
+                    CostEnd = i.CostEnd,
                     CostNow = Math.Round(data.RAW[i.CoinId].GBP.PRICE * i.Amount, 2),
                     CostNowFormatted = (data.RAW[i.CoinId].GBP.PRICE * i.Amount).ToString("n2"),
                     InvestmentDate = i.InvestmentDate,
+                    InvestmentDateEnd = i.InvestmentDateEnd,
                     UserId = i.UserId,
                     PriceChange24Hours = data.DISPLAY[i.CoinId].GBP.CHANGEPCT24HOUR,
                     Hour24High = data.DISPLAY[i.CoinId].GBP.HIGH24HOUR,
@@ -128,7 +130,6 @@ namespace CryptoInv.Controllers
                     ChartDataValue = new double[31],
                     ChartDataDate = new string[31]
                 })
-                .Where(i => i.InvestmentDateEnd == null)
                 .Where(i => i.UserId == _userManager.GetUserId(this.User))
                 .FirstOrDefaultAsync(m => m.Id == id);
 

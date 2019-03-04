@@ -52,12 +52,26 @@
                     <h4>You paid,</h4>
                     <h3>£@(Model.Cost >= 0.01 ? Model.Cost.ToString("n2") : Model.Cost.ToString()) <small>£@(Model.PricePerCoin >= 0.01 ? Model.PricePerCoin.ToString("n2") : Model.PricePerCoin.ToString()) per coin</small></h3>
                     <hr />
-                    <h4>You have a,</h4>
-                    <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
+                    @if (Model.InvestmentDateEnd == null)
+                    {
+                        <h4>You have a,</h4>
+                        <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
+                    }
+                    else
+                    {
+                        <h4>You made a,</h4>
+                        <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
+                    }
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="well well-lg">
+                    @if (Model.InvestmentDateEnd != null)
+                    {
+                        <h4>You sold on,</h4>
+                        <h3>@Html.DisplayFor(model => model.InvestmentDateEnd)</h3>
+                        <hr />
+                    }
                     <h4>@Model.CoinId @Html.DisplayNameFor(model => model.MarketCap).ToLower(),</h4>
                     <h3>@Html.DisplayFor(model => model.MarketCap)</h3>
                     <hr />
