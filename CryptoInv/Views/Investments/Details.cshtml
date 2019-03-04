@@ -52,22 +52,14 @@
                     <h4>You paid,</h4>
                     <h3>£@(Model.Cost >= 0.01 ? Model.Cost.ToString("n2") : Model.Cost.ToString()) <small>£@(Model.PricePerCoin >= 0.01 ? Model.PricePerCoin.ToString("n2") : Model.PricePerCoin.ToString()) per coin</small></h3>
                     <hr />
-                    @if (Model.InvestmentDateEnd == null)
-                    {
-                        <h4>You have a,</h4>
-                        <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
-                    }
-                    else
-                    {
-                        <h4>You made a,</h4>
-                        <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
-                    }
+                    <h4>You @(Model.InvestmentDateEnd == null ? "have" : "made") a,</h4>
+                    <h3>£@(Model.Profit >= 0.01 ? Model.Profit.ToString("n2") : Model.Profit.ToString()) <small>@(Model.Profit < 0 ? "loss" : "profit")</small></h3>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="well well-lg">
                     @if (Model.InvestmentDateEnd != null)
-                    {
+    {
                         <h4>You sold on,</h4>
                         <h3>@Html.DisplayFor(model => model.InvestmentDateEnd)</h3>
                         <hr />
@@ -95,10 +87,10 @@
 @section Scripts {
 <script type="text/javascript">
         var config = {
-            type: 'line',
+        type: 'line',
             data: {
-                datasets: [{
-                    data: [@string.Join(",", Model.ChartDataValue)],
+            datasets: [{
+                data: [@string.Join(",", Model.ChartDataValue)],
                     backgroundColor: ['rgba(24,188,156, 0.5)'],
                 }],
                 labels: ["@Html.Raw(string.Join("\",\"", Model.ChartDataDate))"]
