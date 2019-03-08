@@ -14,6 +14,7 @@
             <li><a asp-area="" asp-controller="Investments" asp-action="Create">Create New</a></li>
         </ul>
     </li>
+    <li><a asp-area="" asp-controller="Coins" asp-action="Index">Coins</a></li>
     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
 </ul>
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
