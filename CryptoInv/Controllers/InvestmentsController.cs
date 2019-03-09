@@ -264,6 +264,82 @@ namespace CryptoInv.Controllers
             return View(investment);
         }
 
+        // GET: Investments/Complete/5
+        public async Task<IActionResult> Complete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var investment = await _context.Investments
+                                    .Select(i => new InvestmentCompleteViewModel()
+                                    {
+                                        Id = i.Id,
+                                        CoinId = i.CoinId,
+                                        Amount = i.Amount,
+                                        Cost = i.Cost,
+                                        PricePerCoinEnd = i.PricePerCoinEnd,
+                                        InvestmentDateEnd = i.InvestmentDateEnd,
+                                        UserId = i.UserId
+                                    })
+                                    .Where(i => i.InvestmentDateEnd == null)
+                                    .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (investment == null || investment.InvestmentDateEnd != null || investment.UserId != _userManager.GetUserId(this.User))
+            {
+                return NotFound();
+            }
+            return View(investment);
+        }
+
+        // POST: Investments/Complete/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Complete(int id, [Bind("Id,CoinId,Amount,Cost,PricePerCoinEnd,InvestmentDateEnd")] InvestmentCompleteViewModel investment)
+        {
+            if (id != investment.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var toUpdate = await _context.Investments
+                        .FirstOrDefaultAsync(c => c.Id == investment.Id);
+
+                    if(toUpdate.UserId != _userManager.GetUserId(this.User))
+                    {
+                        return NotFound();
+                    }
+
+                    toUpdate.InvestmentDateEnd = investment.InvestmentDateEnd;
+                    toUpdate.PricePerCoinEnd = investment.PricePerCoinEnd;
+                    toUpdate.CostEnd = investment.PricePerCoinEnd * toUpdate.Amount;
+
+                    _context.Update(toUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InvestmentExists(investment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(investment);
+        }
+
         // GET: Investments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
