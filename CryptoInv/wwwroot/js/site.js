@@ -5,4 +5,6 @@
             'aTargets': [-1]
         }]
     });
+
+    $('.table-data-last-active').DataTable();
 });

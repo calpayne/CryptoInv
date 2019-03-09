@@ -20,13 +20,13 @@ namespace CryptoInv.Models.Coins
         [Display(Name = "Change (24h)"), Required]
         public string PriceChange24Hours { get; set; }
 
-        [Display(Name = "24h High")]
+        [Display(Name = "High Price (24h)")]
         public string Hour24High { get; set; }
 
-        [Display(Name = "24h Low")]
+        [Display(Name = "Low Price (24h)")]
         public string Hour24Low { get; set; }
 
-        [Display(Name = "24h Volume")]
+        [Display(Name = "Volume (24h)")]
         public string Volume24 { get; set; }
 
         [Display(Name = "Market Cap")]
