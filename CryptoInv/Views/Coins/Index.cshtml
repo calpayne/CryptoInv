@@ -1,35 +1,93 @@
-﻿@model IEnumerable<CryptoInv.Data.Coin>
+﻿@model IEnumerable<CryptoInv.Models.Coins.CoinViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Coins";
 }
 
-<h2>Index</h2>
+<div class="heading single">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Coins</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-small" id="refresh">
+    <div class="container" id="coin-data">
+        <hr style="margin: 40px 0" />
+        @foreach (var item in Model)
+        {
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="coin">
+                        <h3><i class="cc @Html.DisplayFor(modelItem => item.Id)"></i> @Html.DisplayFor(modelItem => item.Name) <small>(@Html.DisplayFor(modelItem => item.Id))</small></h3>
+                        <h4>@Html.DisplayFor(modelItem => item.PricePerCoinFormatted) <small class="text-success">(@Html.DisplayFor(modelItem => item.PriceChange24Hours)%)</small></h4>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h4 class="mt-2">@Html.DisplayFor(modelItem => item.Hour24High)<br /><small>@Html.DisplayNameFor(model => model.Hour24High)</small></h4>
+                </div>
+                <div class="col-md-2">
+                    <h4 class="mt-2">@Html.DisplayFor(modelItem => item.Hour24Low)<br /><small>@Html.DisplayNameFor(model => model.Hour24Low)</small></h4>
+                </div>
+                <div class="col-md-2">
+                    <h4 class="mt-2">@Html.DisplayFor(modelItem => item.Volume24)<br /><small>@Html.DisplayNameFor(model => model.Volume24)</small></h4>
+                </div>
+                <div class="col-md-2">
+                    <h4 class="mt-2">@Html.DisplayFor(modelItem => item.MarketCap)<br /><small>@Html.DisplayNameFor(model => model.MarketCap)</small></h4>
+                </div>
+            </div>
+            <hr style="margin: 40px 0" />
+        }
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@section Scripts {
+    <script type="text/javascript">
+        var config = {
+            type: 'line',
+            data: {
+                datasets: [{
+                    data: [88.23, 98.24, 98.28, 97.14, 94.59, 94.01, 94.21, 94.3, 93.12, 14.38],
+                    backgroundColor: ['rgba(24,188,156, 0.5)'],
+                }],
+                labels: ["07 February", "08 February", "09 February", "10 February", "11 February", "12 February", "13 February", "14 February", "15 February", "16 February"]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                bezierCurve: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        display: false
+                    }],
+                    yAxes: [{
+                        display: false
+                    }]
+                },
+            }
+        };
+
+        window.onload = function () {
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            window.myPie = new Chart(ctx, config);
+        };
+
+        setInterval("updateCoinData();", 5000);
+        function updateCoinData() {
+            $('#refresh').load(location.href + ' #coin-data');
+        }
+    </script>
 }
-    </tbody>
-</table>

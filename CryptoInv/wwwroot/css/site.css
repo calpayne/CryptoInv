@@ -65,7 +65,7 @@
     padding-bottom: 0;
 }
 .grey {
-    background-color: #f9f9f9;
+    background-color: #fdfdfd;
 }
 .title {
     text-align: center;
@@ -119,7 +119,7 @@
     text-align: center;
 }
 .well {
-    background-color: #f9f9f9;
+    background-color: #fdfdfd;
 }
 .heading .well p {
     margin: 0;
@@ -173,6 +173,22 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 }
 .investment-details td[scope=row] {
     font-weight: 600;
+}
+.coin-box {
+    padding: 15px;
+    background-color: #fdfdfd;
+}
+.coin-box .cc {
+    font-size: 60px;
+}
+.coin-box h3 {
+    margin: 5px 0;
+}
+.coin-label {
+    padding-top: 8px;
+}
+.coin-label .cc {
+    font-size: 20px;
 }
 .mt-2 {
     margin-top: 20px;
