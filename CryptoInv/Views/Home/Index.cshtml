@@ -1,11 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <div class="jumbotron">
     <div class="container">
         <h1>Track &amp; show off your <span>smart</span> crypto investments!</h1>
-        <p><a class="btn btn-default">Get Started</a></p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <p><a class="btn btn-default" asp-area="" asp-controller="Investments" asp-action="Index">Your Investments</a></p>
+        }
+        else
+        {
+            <p><a class="btn btn-default" asp-area="Identity" asp-page="/Account/Register">Get Started</a></p>
+        }
     </div>
 </div>
 <div class="content" style="padding-top: 80px;">

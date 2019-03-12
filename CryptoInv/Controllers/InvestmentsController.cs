@@ -312,7 +312,7 @@ namespace CryptoInv.Controllers
                     var toUpdate = await _context.Investments
                         .FirstOrDefaultAsync(c => c.Id == investment.Id);
 
-                    if(toUpdate.UserId != _userManager.GetUserId(this.User))
+                    if(toUpdate == null || toUpdate.UserId != _userManager.GetUserId(this.User))
                     {
                         return NotFound();
                     }
